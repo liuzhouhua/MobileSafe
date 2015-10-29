@@ -5,9 +5,31 @@
     android:orientation="vertical" >
     
     <TextView 
-        android:layout_width="wrap_content"
+        android:textSize="22sp"
+        android:textColor="#000000"
+        android:id="@+id/textview1"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="功能列表"
+        android:gravity="center"
+        android:background="#8866ff00"/>
+    
+    <com.example.mobilesafe.ui.FocusedTextView
+        android:text="最新的手机卫士，快乐下载，下载送好吃的，最新的手机卫士，快乐下载，下载送好吃的"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="呵呵，我是祝英台"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:textSize="18sp"
+        android:singleLine="true"
+        android:ellipsize="marquee"/>
+    
+    <GridView 
+        android:id="@+id/list_home"
+        android:layout_marginTop="15dp"
+        android:verticalSpacing="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="3">
+        
+    </GridView>
 
 </LinearLayout>
