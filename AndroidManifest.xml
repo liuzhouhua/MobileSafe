@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.mobilesafe.HomeActivity"/>
+    	<activity android:name="com.example.mobilesafe.SettingActivity"></activity>
     </application>
 
 </manifest>

@@ -27,11 +27,13 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +55,7 @@ public class SplashActivity extends Activity {
 	private TextView tv_splash_version,tv_update_info;
 	private String description;
 	private String apkurl;
+	private SharedPreferences sp;
 	
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
@@ -86,12 +89,28 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		sp = getSharedPreferences("config", MODE_PRIVATE);
 		tv_splash_version = (TextView) findViewById(R.id.tv_splash_version);
 		tv_splash_version.setText("版本号"+getVersionName());
 	
 		tv_update_info = (TextView) findViewById(R.id.tv_update_info);
 		
-		checkUpdate();
+		boolean update = sp.getBoolean("update", false);
+		if(update){
+			//检查升级
+			checkUpdate();
+		}else{
+			//自动升级已关闭
+			mHandler.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					//进入主页面
+					enterHome();
+				}
+			}, 2000);
+		}
+		
 		//动画
 		AlphaAnimation aa = new AlphaAnimation(0.2f, 1.0f);
 		aa.setDuration(500);
@@ -99,7 +118,7 @@ public class SplashActivity extends Activity {
 	}
 
 	protected void showUpdateDialog() {
-		AlertDialog.Builder builder = new Builder(this);
+		AlertDialog.Builder builder = new Builder(getApplicationContext());
 		builder.setTitle("提示升级");
 //		builder.setCancelable(false);
 		builder.setOnCancelListener(new OnCancelListener() {
@@ -135,6 +154,7 @@ public class SplashActivity extends Activity {
 								public void onLoading(long count, long current) {
 									super.onLoading(count, current);
 									int progress = (int) (current*100/count);
+									tv_update_info.setVisibility(View.VISIBLE);
 									tv_update_info.setText("下载进度:"+progress+"%");
 								}
 
