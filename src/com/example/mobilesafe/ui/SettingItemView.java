@@ -51,6 +51,7 @@ public class SettingItemView extends RelativeLayout {
 		desc_on = attrs.getAttributeValue("http://schemas.android.com/apk/res/com.example.mobilesafe", "desc_on");
 		desc_off = attrs.getAttributeValue("http://schemas.android.com/apk/res/com.example.mobilesafe", "desc_off");
 		tv_title.setText(title);
+		tv_desc.setText(desc_off);
 	}
 
 	//new出来的对象调用这个构造方法

@@ -3,7 +3,8 @@
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal"
+    android:background="#ffffff" >
     
 
     <TextView 
@@ -35,6 +36,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
         <Button 
+            android:background="@drawable/button_select"
             android:id="@+id/ok"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
@@ -42,6 +44,7 @@
             android:text="确定"/>
         
         <Button
+            android:background="@drawable/button_select"
             android:id="@+id/cancel" 
             android:layout_width="140dp"
             android:layout_height="wrap_content"

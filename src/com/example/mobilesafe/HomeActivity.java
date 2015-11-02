@@ -1,5 +1,7 @@
 package com.example.mobilesafe;
 
+import com.example.mobilesafe.utils.MD5Utils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -67,6 +69,8 @@ public class HomeActivity extends Activity {
 					break;
 				case 0://进入手机防盗页面
 					showLostFindDialog();
+				case 1:
+					break;
 				default:
 					break;
 				}
@@ -120,18 +124,21 @@ public class HomeActivity extends Activity {
 				if(passwd.equals(passwd_confirm)){
 					//一致的话，就保存密码，把对话框清掉，还要进入手机防盗页面
 					Editor editor = sp.edit();
-					editor.putString("password", passwd);
+					editor.putString("password", MD5Utils.md5PassWord(passwd));//保存成加密后的
 					editor.commit();
 					dialog.dismiss();
 					Log.i(TAG, "一致的话，就保存密码，把对话框清掉，还要进入手机防盗页面");
+					Intent intent = new Intent(HomeActivity.this, LostFindActivity.class);
+					startActivity(intent);
 				}else{
 					Toast.makeText(HomeActivity.this, "密码不一致", 0).show();
 					return;
 				}
 			}
 		});
-		builder.setView(view);
-		dialog = builder.show();
+		dialog = builder.create();
+		dialog.setView(view, 0, 0, 0, 0);
+		dialog.show();
 	}
 
 	/**
@@ -158,16 +165,19 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				//取出密码
 				String passwd = et_setup_pwd.getText().toString().trim();
+				//取出加密后的
 				String savePassword = sp.getString("password", "");
 				if(TextUtils.isEmpty(passwd)){
 					Toast.makeText(HomeActivity.this, "密码为空", 1).show();
 					return;
 				}
-				if(passwd.equals(savePassword)){
+				if(MD5Utils.md5PassWord(passwd).equals(savePassword)){
 					//输入的密码是之前设置的密码
 					//对话框消掉，进入主页面
 					dialog.dismiss();
-					Log.i(TAG, "对话框消掉，进入主页面");
+					Log.i(TAG, "对话框消掉，进入手机防盗面");
+					Intent intent = new Intent(HomeActivity.this, LostFindActivity.class);
+					startActivity(intent);
 				}else{
 					Toast.makeText(HomeActivity.this, "密码错误", 1).show();
 					et_setup_pwd.setText("");
@@ -175,8 +185,10 @@ public class HomeActivity extends Activity {
 				}
 			}
 		});
-		builder.setView(view);
-		dialog = builder.show();
+		
+		dialog = builder.create();
+		dialog.setView(view, 0, 0, 0, 0);
+		dialog.show();
 	}
 
 	/**
