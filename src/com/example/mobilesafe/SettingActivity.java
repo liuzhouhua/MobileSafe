@@ -6,11 +6,13 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class SettingActivity extends Activity {
 	
+
 	private SettingItemView siv_update;
 	private SharedPreferences sp;
 
