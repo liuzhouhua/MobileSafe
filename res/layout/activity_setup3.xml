@@ -26,6 +26,7 @@
         android:inputType="phone"/>
     
     <Button 
+        android:onClick="selectContact"
         android:text="选择联系人"
         android:background="@drawable/button_bg"
         android:layout_width="match_parent"

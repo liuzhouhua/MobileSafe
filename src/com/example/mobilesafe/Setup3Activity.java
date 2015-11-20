@@ -2,6 +2,7 @@ package com.example.mobilesafe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class Setup3Activity extends BaseSetupActivity {
 
@@ -27,5 +28,10 @@ public class Setup3Activity extends BaseSetupActivity {
 		finish();
 		//要求在finish方法或者startActivity（intent）后面执行
 		overridePendingTransition(R.anim.tran_pre_in, R.anim.tran_pre_out);
+	}
+	
+	public void selectContact(View view){
+		Intent intent = new Intent(this, SelectContactActivity.class);
+		startActivityForResult(intent, 0);
 	}
 }
