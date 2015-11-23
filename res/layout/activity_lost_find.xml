@@ -28,6 +28,7 @@
             android:layout_marginTop="10dp"/>
         
         <TextView 
+            android:id="@+id/tv_safenumber"
             android:textSize="20sp"
             android:textColor="#000000"
             android:text="XXXX"
@@ -58,6 +59,7 @@
             android:layout_marginTop="10dp"/>
         
         <ImageView 
+            android:id="@+id/iv_lock"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"

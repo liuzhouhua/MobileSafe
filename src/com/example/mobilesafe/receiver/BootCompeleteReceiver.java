@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -28,6 +29,9 @@ public class BootCompeleteReceiver extends BroadcastReceiver {
 		}else{
 			//sim已经变更
 			Log.i(TAG, "sim已经变更");
+			String safenumber = sp.getString("safenumber", null);
+			SmsManager smsManager = SmsManager.getDefault();
+			smsManager.sendTextMessage(safenumber, null, "sim card change !",null, null);
 		}
 		
 	}
