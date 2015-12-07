@@ -4,5 +4,7 @@
     <string name="app_name">手机卫士</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="sample_device_admin_descrption">设置一键锁屏描述信息</string>
+    <string name="sample_device_admin">设置标签</string>
 
 </resources>

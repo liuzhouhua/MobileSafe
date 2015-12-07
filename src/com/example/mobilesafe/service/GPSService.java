@@ -11,6 +11,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.nfc.cardemulation.OffHostApduService;
 import android.os.Bundle;
 import android.os.IBinder;
 
@@ -55,6 +56,9 @@ public class GPSService extends Service {
 			try {
 				InputStream is = getAssets().open("axisoffset.dat");
 				ModifyOffset modifyOffset = ModifyOffset.getInstance(is);
+				PointDouble double1 = modifyOffset.s2c(new PointDouble(location.getLongitude(), location.getLatitude()));
+				longitude = "jingdu:"+modifyOffset.X+"\n";
+				latitude = "weidu:"+modifyOffset.Y+"\n";
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {

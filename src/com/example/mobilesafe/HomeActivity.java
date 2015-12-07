@@ -71,6 +71,10 @@ public class HomeActivity extends Activity {
 					showLostFindDialog();
 				case 1:
 					break;
+				case 7://进入高级工具
+					Intent intent7 = new Intent(HomeActivity.this, AtoolsActivity.class);
+					startActivity(intent7);
+					break;
 				default:
 					break;
 				}

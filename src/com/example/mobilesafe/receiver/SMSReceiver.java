@@ -3,11 +3,14 @@ package com.example.mobilesafe.receiver;
 import com.example.mobilesafe.R;
 import com.example.mobilesafe.service.GPSService;
 
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.sax.StartElementListener;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
@@ -17,12 +20,14 @@ public class SMSReceiver extends BroadcastReceiver {
 
 	private static final String TAG = "SMSReceiver";
 	private SharedPreferences sp;
+	private DevicePolicyManager dpm;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		//写接受短信的代码
 		Object[] objs = (Object[]) intent.getExtras().get("pdus");
 		sp = context.getSharedPreferences("config", Context.MODE_PRIVATE);
+		dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 		
 		for(Object object: objs){
 			SmsMessage sms = SmsMessage.createFromPdu((byte[])object);
@@ -58,9 +63,25 @@ public class SMSReceiver extends BroadcastReceiver {
 					abortBroadcast();
 				}else if("#*wipedata*#".equals(body)){
 					Log.d(TAG, "远程清除数据");
+					Intent intent2 = new Intent();
+					ComponentName name = new ComponentName(context, MyAdmin.class);
+					intent2.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, name);
+					intent2.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "哥们开启我可以清除数据");
+					context.startActivity(intent2);
+					if(dpm.isAdminActive(name)){
+						dpm.wipeData(0);
+					}
 					abortBroadcast();
 				}else if("#*lockscrenn*#".equals(body)){
 					Log.d(TAG, "远程锁屏");
+					Intent intent3 = new Intent();
+					ComponentName name = new ComponentName(context, MyAdmin.class);
+					intent3.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, name);
+					intent3.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "哥们开启我可以一键锁屏");
+					context.startActivity(intent3);
+					if(dpm.isAdminActive(name)){
+						dpm.lockNow();
+					}
 					abortBroadcast();
 				}
 			}
