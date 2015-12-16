@@ -1,6 +1,7 @@
 package com.example.mobilesafe;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -96,6 +97,10 @@ public class SplashActivity extends Activity {
 		tv_update_info = (TextView) findViewById(R.id.tv_update_info);
 		
 		boolean update = sp.getBoolean("update", false);
+		
+		//拷贝数据库
+		copyDB();
+		
 		if(update){
 			//检查升级
 			checkUpdate();
@@ -115,6 +120,33 @@ public class SplashActivity extends Activity {
 		AlphaAnimation aa = new AlphaAnimation(0.2f, 1.0f);
 		aa.setDuration(500);
 		findViewById(R.id.rl_root_splash).startAnimation(aa);
+	}
+
+	//path 把address.db拷贝到data/data/<包名>/files/address.db
+	private void copyDB() {
+		//只要拷贝了一次，就不再拷贝
+		try {
+			File file = new File(getFilesDir(), "address.db");
+			if(file.exists() && file.length()>0){
+				//不需要拷贝了
+				Log.i(TAG, "不需要拷贝");
+			}else{
+				Log.i(TAG, "拷贝数据库");
+				InputStream is = getAssets().open("address.db");
+				FileOutputStream fos = new FileOutputStream(file);
+				
+				byte[] buffer = new byte[1024];
+				int len = 0;
+				while((len = is.read(buffer))!=-1){//依然还有
+					fos.write(buffer, 0, len);
+				}
+				is.close();
+				fos.close();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void showUpdateDialog() {
