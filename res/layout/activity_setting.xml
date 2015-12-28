@@ -35,5 +35,11 @@
         
     </com.example.mobilesafe.ui.SettingItemView>
     
+    <com.example.mobilesafe.ui.SettingClickView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scv_changebg">
+        
+    </com.example.mobilesafe.ui.SettingClickView>
 
 </LinearLayout>

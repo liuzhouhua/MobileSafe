@@ -1,5 +1,6 @@
 package com.example.mobilesafe.service;
 
+import com.example.mobilesafe.R;
 import com.example.mobilesafe.db.dao.NumberAddressQueryUtils;
 
 import android.app.Service;
@@ -7,11 +8,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +27,7 @@ public class AddressService extends Service {
 	private OutCallReceiver receiver;
 	//窗体管理者---这是个服务
 	private WindowManager wm;
-	private TextView view;
+	private View view;
 	
 	private class OutCallReceiver extends BroadcastReceiver {
 
@@ -102,11 +105,18 @@ public class AddressService extends Service {
 	}
 	
 	private void myToast(String address) {
-		view = new TextView(getApplicationContext());
-		view.setText(address);
-		view.setTextSize(22);
-		view.setTextColor(Color.RED);
-		
+//		view = new TextView(getApplicationContext());
+//		view.setText(address);
+//		view.setTextSize(22);
+//		view.setTextColor(Color.RED);
+		//"半透明","活力橙","卫士蓝","金属灰","苹果绿"
+		int[] ids = {R.drawable.call_locate_white,R.drawable.call_locate_orange,R.drawable.call_locate_blue
+				,R.drawable.call_locate_gray,R.drawable.call_locate_green};
+		view = View.inflate(this, R.layout.address_show, null);
+		SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
+		view.setBackgroundResource(ids[sp.getInt("which", 0)]);
+		TextView textView =(TextView) view.findViewById(R.id.tv_address);
+		textView.setText(address);
 		//窗体参数设置
 		WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;

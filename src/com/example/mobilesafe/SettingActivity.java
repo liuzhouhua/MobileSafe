@@ -1,15 +1,20 @@
 package com.example.mobilesafe;
 
 import com.example.mobilesafe.service.AddressService;
+import com.example.mobilesafe.ui.SettingClickView;
 import com.example.mobilesafe.ui.SettingItemView;
 import com.example.mobilesafe.utils.ServiceUtils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.location.Address;
 import android.os.Bundle;
+import android.text.AlteredCharSequence;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +28,9 @@ public class SettingActivity extends Activity {
 	private SharedPreferences sp;
 	
 	private Intent showAddress;
+	
+	//设置归属地显示框背景
+	private SettingClickView settingClickView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,5 +92,38 @@ public class SettingActivity extends Activity {
 				}
 			}
 		});
+		
+		settingClickView = (SettingClickView) findViewById(R.id.scv_changebg);
+		settingClickView.setTitle("归属地提示框风格");
+		final String[] items = {"半透明","活力橙","卫士蓝","金属灰","苹果绿"};
+		int which = sp.getInt("which", 0);
+		settingClickView.setDesc(items[which]);
+		settingClickView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				int dd = sp.getInt("which", 0);
+				//弹出一个对话框
+				AlertDialog.Builder builder = new Builder(SettingActivity.this);
+				builder.setTitle("归属地提示框风格");
+				builder.setSingleChoiceItems(items, dd, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						//保存选择参数
+						Editor editor = sp.edit();
+						editor.putInt("which", which);
+						editor.commit();
+						settingClickView.setDesc(items[which]);
+						//取消对话框
+						dialog.dismiss();
+					}
+				});
+				builder.setNegativeButton("cancel", null);
+				builder.show();
+			}
+		});
+		
 	}
 }
